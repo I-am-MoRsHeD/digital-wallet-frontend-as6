@@ -1,10 +1,14 @@
+import { Outlet } from "react-router"
+import MainLayout from "./components/layout/MainLayout"
 
 
 function App() {
 
   return (
     <>
-      <h1>Vite + React</h1>
+      <MainLayout>
+        <Outlet />
+      </MainLayout>
     </>
   )
 }
