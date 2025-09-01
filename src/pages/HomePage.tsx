@@ -1,9 +1,10 @@
+import HeroSection from "@/components/modules/Homepage/HeroSection";
 
 
 const HomePage = () => {
     return (
         <div className="container mx-auto">
-            This is home
+            <HeroSection />
         </div>
     );
 };
