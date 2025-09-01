@@ -17,13 +17,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Link } from "react-router";
 
 export default function UserMenu() {
+  const isAdmin = true;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild className="cursor-pointer">
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
-          <Avatar>
+          <Avatar className="bg-foreground">
             <AvatarImage src="./avatar.jpg" alt="Profile image" />
             <AvatarFallback>KK</AvatarFallback>
           </Avatar>
@@ -39,11 +41,15 @@ export default function UserMenu() {
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <span>Dashboard</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+        {isAdmin && (
+          <Link to="/admin/dashboard">
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <span>Dashboard</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </Link>
+        )}
         <DropdownMenuItem>
           <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
           <span>Logout</span>
