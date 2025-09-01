@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Link } from "react-router";
 
-export default function UserMenu() {
-  const isAdmin = true;
+export default function UserMenu({ role }: { role: string }) {
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="cursor-pointer">
@@ -41,8 +41,8 @@ export default function UserMenu() {
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {isAdmin && (
-          <Link to="/admin/dashboard">
+        {role && (
+          <Link to={`${role.toLowerCase()}/dashboard`}>
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <span>Dashboard</span>

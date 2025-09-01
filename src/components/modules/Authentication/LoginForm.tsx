@@ -1,15 +1,39 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
+import { useLoginMutation } from "@/redux/features/auth/auth.api";
 
 
 const LoginForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+    const navigate = useNavigate();
     const form = useForm();
+    const [login] = useLoginMutation();
+
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        console.log(data);
+        const toastId = toast.loading('Please wait!');
+        try {
+            const res = await login(data).unwrap();
+            if (res.statusCode === 200) {
+                toast.success(res.message, { id: toastId });
+                if (res?.data?.user?.role) {
+                    navigate(`/${res.data.user.role.toLowerCase()}/dashboard`);
+                }
+            }
+        } catch (err: any) {
+            console.error(err);
+            if (err.status === 400) {
+                toast.error(err?.data?.message, { id: toastId });
+            }
+            if (err.status === 401) {
+                toast.error(err.data.message, { id: toastId });
+                navigate("/verify", { state: data.email });
+            }
+        }
     }
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>

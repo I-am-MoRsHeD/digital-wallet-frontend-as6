@@ -14,6 +14,7 @@ import {
 import Logo from "@/assets/icons/Logo"
 import { ModeToggle } from "./ModeToggle"
 import { Link } from "react-router"
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
@@ -25,6 +26,8 @@ const navigationLinks = [
 ]
 
 export default function Navbar() {
+  const { data: userInfo } = useUserInfoQuery(undefined);
+
   return (
     <header className="container mx-auto border-b sticky top-1 z-50 bg-muted rounded-md px-2">
       <div className="flex h-16 items-center justify-between w-full gap-4">
@@ -103,10 +106,13 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-4">
           <ModeToggle />
-          {/* <Button asChild className="text-sm">
-            <Link to="/login">Login</Link>
-          </Button> */}
-          <UserMenu />
+          {
+            userInfo?.role ? (
+              <UserMenu role={userInfo?.role as string} />
+            ) : <Button asChild className="text-sm">
+              <Link to="/login">Login</Link>
+            </Button>
+          }
         </div>
       </div>
     </header>
