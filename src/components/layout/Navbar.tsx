@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/popover"
 import Logo from "@/assets/icons/Logo"
 import { ModeToggle } from "./ModeToggle"
-import { Link } from "react-router"
+import { Link, useLocation } from "react-router"
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 
 const navigationLinks = [
@@ -27,6 +27,7 @@ const navigationLinks = [
 
 export default function Navbar() {
   const { data: userInfo } = useUserInfoQuery(undefined);
+  const { pathname } = useLocation();
 
   return (
     <header className="container mx-auto border-b sticky top-1 z-50 bg-muted rounded-md px-2">
@@ -85,14 +86,14 @@ export default function Navbar() {
           </Popover>
         </div>
         {/* Main nav */}
-        <a href="#" className="text-primary hover:text-primary/90 hidden md:block">
+        <Link to="/" className="text-primary hover:text-primary/90 hidden md:block">
           <Logo />
-        </a>
+        </Link>
         {/* Navigation menu */}
         <NavigationMenu className="max-md:hidden">
           <NavigationMenuList className="flex flex-row gap-5">
             {navigationLinks.map((link, index) => (
-              <NavigationMenuItem key={index}>
+              <NavigationMenuItem key={index} className={`${pathname === link.href ? 'border-b-[2px] rounded border-primary' : "hover:border-b-[2px] hover:border-primary"}`}>
                 <Link
                   to={link.href}
                   className="text-muted-foreground hover:text-primary py-1.5 font-medium"
@@ -108,7 +109,7 @@ export default function Navbar() {
           <ModeToggle />
           {
             userInfo?.role ? (
-              <UserMenu role={userInfo?.role as string} />
+              <UserMenu />
             ) : <Button asChild className="text-sm">
               <Link to="/login">Login</Link>
             </Button>

@@ -25,13 +25,12 @@ const LoginForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>
                 }
             }
         } catch (err: any) {
-            console.error(err);
             if (err.status === 400) {
                 toast.error(err?.data?.message, { id: toastId });
             }
             if (err.status === 401) {
                 toast.error(err.data.message, { id: toastId });
-                navigate("/verify", { state: data.email });
+                navigate("/");
             }
         }
     }

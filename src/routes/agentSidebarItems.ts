@@ -4,7 +4,6 @@ import type { ISidebar } from "@/types";
 
 export const agentSidebarItems: ISidebar[] = [
     {
-        title: "Dashboard",
         items: [
             {
                 title: "Overview",

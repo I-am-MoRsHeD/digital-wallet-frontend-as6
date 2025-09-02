@@ -1,14 +1,22 @@
 import * as React from "react"
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from "@/components/ui/sidebar";
 import { getSidebarItems } from "@/utils/getSidebarItems";
 import Logo from "@/assets/icons/Logo";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 
 const data = {
   navMain: getSidebarItems("USER")
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: userInfo } = useUserInfoQuery(undefined);
+  const { pathname } = useLocation();
+
+  const role = userInfo?.role
+    ? userInfo.role.charAt(0).toUpperCase() + userInfo.role.slice(1).toLowerCase()
+    : "";
+
 
   return (
     <Sidebar {...props}>
@@ -16,20 +24,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarHeader>
           <div className="my-3 flex flex-row gap-3 items-center">
             <Logo />
-            <h1 className="text-xl text-primary font-semibold">Admin Dashboard</h1>
+            <h1 className="text-xl text-primary font-semibold">{role} Dashboard</h1>
           </div>
         </SidebarHeader>
       </Link>
       <SidebarContent>
-        {data.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+        {data.navMain.map((item, index) => (
+          <SidebarGroup key={index}>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="flex flex-col gap-5">
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.url}>{item.title}</a>
+                    <SidebarMenuButton asChild
+                      className={`py-6 text-base ${pathname === item.url ? "bg-primary text-white hover:bg-primary hover:text-white" : "hover:bg-primary hover:text-white"}`}
+                    >
+                      <Link to={item.url}>{item.title}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

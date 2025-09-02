@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -5,39 +6,49 @@ import { Input } from "@/components/ui/input";
 import Password from "@/components/ui/Password";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { role } from "@/constants/role";
+import { useRegisterMutation } from "@/redux/features/auth/auth.api";
+import { toast } from "sonner";
 
 const registerSchema = z.object({
     name: z.string().min(3, {
         error: "Name must be at least 3 characters long"
     }).max(50),
     email: z.email(),
+    role: z.enum(Object.values(role) as [string]),
     password: z.string().min(8, {
         error: "Password must be at least 8 characters long"
-    }),
-    confirmPassword: z.string().min(8, {
-        error: "Password must be at least 8 characters long"
-    }),
-}).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ['confirmPassword']
-})
+    })
+});
 
 const RegisterForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+    const [register] = useRegisterMutation();
+    const navigate = useNavigate();
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
             name: "",
             email: "",
-            password: "",
-            confirmPassword: ""
+            role: role.user,
+            password: ""
         }
     });
 
     const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-        console.log(data);
+        const toastId = toast.loading('Please wait...');
+        try {
+            const res = await register(data).unwrap();
+            console.log(res);
+            toast.success(res?.message, { id: toastId });
+            navigate('/login');
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error?.data?.message, { id: toastId });
+        }
     };
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -50,7 +61,7 @@ const RegisterForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
 
             <div className="grid gap-6">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         {/* name */}
                         <FormField
                             control={form.control}
@@ -85,6 +96,30 @@ const RegisterForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
                                 </FormItem>
                             )}
                         />
+                        {/* role */}
+                        <FormField
+                            control={form.control}
+                            name="role"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Register as </FormLabel>
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <FormControl className="w-full">
+                                            <SelectTrigger>
+                                                <SelectValue />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value={role.user}>User</SelectItem>
+                                            <SelectItem value={role.agent}>Agent</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormDescription>
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         {/* password */}
                         <FormField
                             control={form.control}
@@ -92,23 +127,6 @@ const RegisterForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Password {...field} />
-                                    </FormControl>
-                                    <FormDescription className="sr-only">
-                                        This is your password
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        {/* confirm Password */}
-                        <FormField
-                            control={form.control}
-                            name="confirmPassword"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Confirm Password</FormLabel>
                                     <FormControl>
                                         <Password {...field} />
                                     </FormControl>

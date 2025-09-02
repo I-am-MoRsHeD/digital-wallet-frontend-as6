@@ -42,17 +42,17 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path: '/admin/dashboard',
+        path: '/admin',
         Component: DashboardLayout,
         children: generateRoutes(adminSidebarItems)
     },
     {
-        path: '/agent/dashboard',
+        path: '/agent',
         Component: DashboardLayout,
         children: generateRoutes(agentSidebarItems)
     },
     {
-        path: '/user/dashboard',
+        path: '/user',
         Component: DashboardLayout,
         children: generateRoutes(userSidebarItems)
     },
