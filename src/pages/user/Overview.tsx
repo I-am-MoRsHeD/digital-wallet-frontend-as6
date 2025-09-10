@@ -1,9 +1,12 @@
 import { Icons } from '@/assets/icons/Icons';
 import bgCardIimage from '@/assets/images/bg-wallet.png';
 import RecentTransaction from '@/components/modules/User/Overview/RecentTransaction';
+import { useWalletInfoQuery } from '@/redux/features/wallet/wallet.api';
 import { Link } from 'react-router';
 
 const Overview = () => {
+    const { data: walletInfo, isLoading } = useWalletInfoQuery(undefined);
+
     const quickActions = [
         {
             label: 'Send Money',
@@ -18,7 +21,7 @@ const Overview = () => {
     ]
     return (
         <div className="grid grid-cols-12 gap-4">
-            <div className='col-span-5 space-y-3'>
+            <div className='col-span-12 lg:col-span-5 space-y-3'>
                 {/* wallet */}
                 <div
                     className="w-full h-52 bg-cover bg-center rounded-lg text-white p-5 flex flex-col justify-between"
@@ -27,17 +30,17 @@ const Overview = () => {
                     <div className="flex flex-row justify-between items-center">
                         <div>
                             <h4 className="text-xs font-semibold">Wallet Name</h4>
-                            <p className="text-2xl font-medium">Main Wallet</p>
+                            <p className="text-2xl font-medium">{walletInfo?.walletName}</p>
                         </div>
                         <div>
                             <h4 className="text-xs font-semibold text-right">Status</h4>
-                            <p className="text-2xl font-medium">ACTIVE</p>
+                            <p className="text-2xl font-medium">{walletInfo?.status}</p>
                         </div>
                     </div>
                     <div className="grow-0">
                         <div>
                             <h4 className="text-xs font-semibold">Wallet Balance</h4>
-                            <p className="text-2xl font-medium">BDT. 22000</p>
+                            <p className="text-2xl font-medium">BDT. {walletInfo?.balance}</p>
                         </div>
                     </div>
                 </div>

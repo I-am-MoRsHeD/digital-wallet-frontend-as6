@@ -54,7 +54,7 @@ const invoices = [
 
 const RecentTransaction = () => {
     return (
-        <div className="col-span-7 p-3 bg-primary/5 rounded-lg max-h-[80vh]">
+        <div className="col-span-12 lg:col-span-7 p-3 bg-primary/5 rounded-lg max-h-[80vh]">
             <div className='flex flex-row justify-between items-center'>
                 <h1 className="text-lg text-primary font-semibold">Recent Transactions</h1>
                 <Link to="/user/transactions" className="text-lg text-foreground/50 font-medium">See all</Link>

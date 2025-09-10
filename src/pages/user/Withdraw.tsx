@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useWithdrawMutation } from "@/redux/features/wallet/wallet.api";
+import { toast } from "sonner";
 
 const withdrawFormSchema = z.object({
     phoneNumber: z
@@ -11,21 +14,35 @@ const withdrawFormSchema = z.object({
         .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
             message: "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
         }),
-    amount: z.number().min(10, { message: "Minimum withdraw amount is 10 BDT" }),
+    balance: z.number({ error: "Amount must be number" }).min(10, { message: "Minimum withdraw amount is 10 BDT" }),
 });
 
 const Withdraw = () => {
+    const [withdraw] = useWithdrawMutation();
+
     const form = useForm<z.infer<typeof withdrawFormSchema>>({
         resolver: zodResolver(withdrawFormSchema),
         defaultValues: {
             phoneNumber: "",
-            amount: undefined
+            balance: 10 as number
         },
 
     });
 
-    const onSubmit = (data: z.infer<typeof withdrawFormSchema>) => {
-        console.log(data);
+    const onSubmit = async (data: z.infer<typeof withdrawFormSchema>) => {
+        const toastId = toast.loading('Please wait...');
+
+        try {
+            const res = await withdraw(data).unwrap();
+            console.log(res);
+            if (res.success) {
+                form.reset();
+                toast.success(res?.message, { id: toastId });
+            }
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error?.data?.message, { id: toastId });
+        }
     };
     return (
         <div className=" flex flex-col justify-center items-center min-h-[80vh]">
@@ -56,7 +73,7 @@ const Withdraw = () => {
 
                             <FormField
                                 control={form.control}
-                                name="amount"
+                                name="balance"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Amount</FormLabel>
@@ -65,7 +82,9 @@ const Withdraw = () => {
                                                 type="number"
                                                 placeholder="1000"
                                                 {...field}
-                                                value={field.value || ""}
+                                                onChange={(e) =>
+                                                    field.onChange(e.target.value === "" ? undefined : Number(e.target.value))
+                                                }
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -73,7 +92,7 @@ const Withdraw = () => {
                                 )}
                             />
                             <Button type="submit" className="w-full">
-                                Login
+                                Withdraw
                             </Button>
                         </form>
                     </Form>
