@@ -19,10 +19,24 @@ const registerSchema = z.object({
         error: "Name must be at least 3 characters long"
     }).max(50),
     email: z.email(),
+    phoneNumber: z
+        .string({ error: "Phone Number must be string" })
+        .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
+            message: "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
+        }),
     role: z.enum(Object.values(role) as [string]),
-    password: z.string().min(8, {
-        error: "Password must be at least 8 characters long"
-    })
+    password: z
+        .string({ error: "Password must be string" })
+        .min(8, { message: "Password must be at least 8 characters long." })
+        .regex(/^(?=.*[A-Z])/, {
+            message: "Password must contain at least 1 uppercase letter.",
+        })
+        .regex(/^(?=.*[!@#$%^&*])/, {
+            message: "Password must contain at least 1 special character.",
+        })
+        .regex(/^(?=.*\d)/, {
+            message: "Password must contain at least 1 number.",
+        }),
 });
 
 const RegisterForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
@@ -33,6 +47,7 @@ const RegisterForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
         defaultValues: {
             name: "",
             email: "",
+            phoneNumber: "",
             role: role.user,
             password: ""
         }
@@ -91,6 +106,23 @@ const RegisterForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
                                     </FormControl>
                                     <FormDescription className="sr-only">
                                         This is your public display email
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* phoneNumber */}
+                        <FormField
+                            control={form.control}
+                            name="phoneNumber"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Phone Number</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="+8801***-******" {...field} />
+                                    </FormControl>
+                                    <FormDescription className="sr-only">
+                                        This is your public display phone number
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
