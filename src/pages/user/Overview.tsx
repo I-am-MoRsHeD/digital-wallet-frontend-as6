@@ -18,7 +18,11 @@ const Overview = () => {
             icon: Icons.Cashout,
             url: '/user/withdraw'
         },
-    ]
+    ];
+
+    if(isLoading){
+        return <div>Loading...</div>
+    }
     return (
         <div className="grid grid-cols-12 gap-4">
             <div className='col-span-12 lg:col-span-5 space-y-3'>

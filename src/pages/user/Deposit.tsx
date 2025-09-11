@@ -15,56 +15,20 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useState } from "react";
+import { useDepositInfoQuery } from "@/redux/features/transaction/transaction.api";
+import { getDateFormat } from "@/utils/getDateFormat";
+import type { ITransaction } from "@/types";
 
-const invoices = [
-    {
-        invoice: "INV001",
-        paymentStatus: "Paid",
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV002",
-        paymentStatus: "Pending",
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV005",
-        paymentStatus: "Paid",
-        totalAmount: "$550.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV006",
-        paymentStatus: "Pending",
-        totalAmount: "$200.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV007",
-        paymentStatus: "Unpaid",
-        totalAmount: "$300.00",
-        paymentMethod: "Credit Card",
-    },
-]
 
 const Deposit = () => {
     const [currentPage, setCurrentPage] = useState(1);
+    const { data: depositInfo, isLoading } = useDepositInfoQuery(undefined);
 
-    const totalPage = 3;
+    if (isLoading) {
+        return <div>Loading...</div>
+    };
+
+    const totalPage = depositInfo?.meta?.totalPage;
 
     const handlePrevPage = () => {
         setCurrentPage(prev => prev - 1);
@@ -81,19 +45,23 @@ const Deposit = () => {
             <Table className="mt-5">
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[100px]">Invoice</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Received From</TableHead>
                         <TableHead>Method</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead className="text-right">Status</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {invoices.map((invoice) => (
-                        <TableRow key={invoice.invoice}>
-                            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                            <TableCell>{invoice.paymentStatus}</TableCell>
-                            <TableCell>{invoice.paymentMethod}</TableCell>
-                            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+                    {depositInfo?.data?.map((data: ITransaction) => (
+                        <TableRow key={data._id}>
+                            <TableCell className="font-medium">
+                                {getDateFormat(data.createdAt)}
+                            </TableCell>
+                            <TableCell>{data?.sender?.name}</TableCell>
+                            <TableCell>Cash In</TableCell>
+                            <TableCell>{data.amount} BDT</TableCell>
+                            <TableCell className="text-right">{data?.status}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

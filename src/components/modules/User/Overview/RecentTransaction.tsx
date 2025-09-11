@@ -6,53 +6,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { useAllTransactionsQuery } from "@/redux/features/transaction/transaction.api";
+import type { ITransaction } from "@/types";
+import { getDateFormat } from "@/utils/getDateFormat";
 import { Link } from "react-router";
-const invoices = [
-    {
-        invoice: "INV001",
-        paymentStatus: "Paid",
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV002",
-        paymentStatus: "Pending",
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV005",
-        paymentStatus: "Paid",
-        totalAmount: "$550.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV006",
-        paymentStatus: "Pending",
-        totalAmount: "$200.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV007",
-        paymentStatus: "Unpaid",
-        totalAmount: "$300.00",
-        paymentMethod: "Credit Card",
-    },
-]
 
 const RecentTransaction = () => {
+    const { data: transactions, isLoading } = useAllTransactionsQuery(undefined);
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    };
+
     return (
         <div className="col-span-12 lg:col-span-7 p-3 bg-primary/5 rounded-lg max-h-[80vh]">
             <div className='flex flex-row justify-between items-center'>
@@ -62,19 +27,27 @@ const RecentTransaction = () => {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[100px]">Invoice</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Received From</TableHead>
+                        <TableHead>Send To</TableHead>
                         <TableHead>Method</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead className="text-right">Status</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {invoices.map((invoice) => (
-                        <TableRow key={invoice.invoice}>
-                            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                            <TableCell>{invoice.paymentStatus}</TableCell>
-                            <TableCell>{invoice.paymentMethod}</TableCell>
-                            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+                    {transactions?.data?.slice(0, 8)?.map((data : ITransaction) => (
+                        <TableRow key={data._id}>
+                            <TableCell className="font-medium">
+                                {getDateFormat(data.createdAt)}
+                            </TableCell>
+                            <TableCell>{data?.sender?.name}</TableCell>
+                            <TableCell>{data?.receiver?.name}</TableCell>
+                            <TableCell>
+                                {data?.type === 'CASH_IN' ? 'Deposit' : data?.type === 'WITHDRAW' ? 'Withdraw' : 'Send Money'}
+                            </TableCell>
+                            <TableCell>{data.amount} BDT</TableCell>
+                            <TableCell className="text-right">{data?.status}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
