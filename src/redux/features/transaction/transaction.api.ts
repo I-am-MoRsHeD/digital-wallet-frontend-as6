@@ -10,6 +10,13 @@ export const transactionApi = baseApi.injectEndpoints({
             }),
             providesTags: ["WALLET", "TRANSACTION"]
         }),
+        cashOutInfo: builder.query({
+            query: () => ({
+                url: '/transactions/withdraw',
+                method: 'GET'
+            }),
+            providesTags: ["WALLET", "TRANSACTION"]
+        }),
         allTransactions: builder.query({
             query: (query) => ({
                 url: '/transactions/me',
@@ -21,4 +28,4 @@ export const transactionApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useDepositInfoQuery, useAllTransactionsQuery } = transactionApi;
+export const { useDepositInfoQuery, useCashOutInfoQuery, useAllTransactionsQuery } = transactionApi;

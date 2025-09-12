@@ -15,20 +15,20 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { useState } from "react";
-import { useDepositInfoQuery } from "@/redux/features/transaction/transaction.api";
+import { useCashOutInfoQuery } from "@/redux/features/transaction/transaction.api";
 import { getDateFormat } from "@/utils/getDateFormat";
 import type { ITransaction } from "@/types";
 
 
-const Deposit = () => {
+const CashOut = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const { data: depositInfo, isLoading } = useDepositInfoQuery(undefined);
+    const { data: cashOutInfo, isLoading } = useCashOutInfoQuery(undefined);
 
     if (isLoading) {
         return <div>Loading...</div>
     };
 
-    const totalPage = depositInfo?.meta?.totalPage;
+    const totalPage = cashOutInfo?.meta?.totalPage;
 
     const handlePrevPage = () => {
         setCurrentPage(prev => prev - 1);
@@ -40,7 +40,7 @@ const Deposit = () => {
     return (
         <div className="w-full p-3 bg-primary/5 rounded-lg">
             <div className='flex flex-row justify-between items-center'>
-                <h1 className="text-xl text-primary font-semibold">Deposit Log</h1>
+                <h1 className="text-xl text-primary font-semibold">Cash Out Log</h1>
             </div>
             <Table className="mt-5">
                 <TableHeader>
@@ -53,17 +53,25 @@ const Deposit = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {depositInfo?.data?.map((data: ITransaction) => (
-                        <TableRow key={data._id}>
-                            <TableCell className="font-medium">
-                                {getDateFormat(data.createdAt)}
+                    {cashOutInfo?.data?.length === 0 ? (
+                        <TableRow>
+                            <TableCell colSpan={5} className="text-center">
+                                No cash out found.
                             </TableCell>
-                            <TableCell>{data?.sender?.name}</TableCell>
-                            <TableCell>Cash In</TableCell>
-                            <TableCell>{data.amount} BDT</TableCell>
-                            <TableCell className="text-right text-primary font-semibold">{data?.status}</TableCell>
                         </TableRow>
-                    ))}
+                    ) : (
+                        cashOutInfo?.data?.map((data: ITransaction) => (
+                            <TableRow key={data._id}>
+                                <TableCell className="font-medium">
+                                    {getDateFormat(data.createdAt)}
+                                </TableCell>
+                                <TableCell>{data?.sender?.name}</TableCell>
+                                <TableCell>Cash out</TableCell>
+                                <TableCell>{data.amount} BDT</TableCell>
+                                <TableCell className="text-right text-primary font-semibold">{data?.status}</TableCell>
+                            </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
             {totalPage > 1 && <div className="flex flex-row justify-end w-full my-5">
@@ -92,4 +100,4 @@ const Deposit = () => {
     );
 };
 
-export default Deposit;
+export default CashOut;

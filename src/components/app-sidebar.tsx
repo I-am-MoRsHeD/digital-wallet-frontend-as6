@@ -5,13 +5,17 @@ import Logo from "@/assets/icons/Logo";
 import { Link, useLocation } from "react-router";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 
-const data = {
-  navMain: getSidebarItems("USER")
-};
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: userInfo } = useUserInfoQuery(undefined);
+  const { data: userInfo, isLoading } = useUserInfoQuery(undefined);
   const { pathname } = useLocation();
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  };
+  
+  const data = {
+    navMain: getSidebarItems(userInfo?.role),
+  };
 
   const role = userInfo?.role
     ? userInfo.role.charAt(0).toUpperCase() + userInfo.role.slice(1).toLowerCase()

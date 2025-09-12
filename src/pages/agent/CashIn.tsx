@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useSendMoneyMutation } from "@/redux/features/wallet/wallet.api";
+import { useCashInMutation } from "@/redux/features/wallet/wallet.api";
 
 const sendMoneyFormSchema = z.object({
     phoneNumber: z
@@ -17,8 +17,8 @@ const sendMoneyFormSchema = z.object({
     balance: z.number().min(10, { message: "Minimum withdraw amount is 10 BDT" }),
 });
 
-const SendMoney = () => {
-    const [sendMoney] = useSendMoneyMutation();
+const CashIn = () => {
+    const [cashIn] = useCashInMutation();
     const form = useForm<z.infer<typeof sendMoneyFormSchema>>({
         resolver: zodResolver(sendMoneyFormSchema),
         defaultValues: {
@@ -31,7 +31,7 @@ const SendMoney = () => {
     const onSubmit = async (data: z.infer<typeof sendMoneyFormSchema>) => {
         const toastId = toast.loading('Please wait...');
         try {
-            const res = await sendMoney(data).unwrap();
+            const res = await cashIn(data).unwrap();
             if (res.success) {
                 form.reset();
                 toast.success(res?.message, { id: toastId });
@@ -46,7 +46,7 @@ const SendMoney = () => {
         <div className=" flex flex-col justify-center items-center min-h-[80vh]">
             <div className="w-full md:w-[60%] lg:w-96 mx-auto p-3 bg-primary/5 rounded-lg">
                 <div className='flex flex-row justify-between items-center'>
-                    <h1 className="text-xl text-primary font-semibold">Send Money</h1>
+                    <h1 className="text-xl text-primary font-semibold">Cash In</h1>
                 </div>
                 <div className="grid gap-6 mt-10">
                     <Form {...form}>
@@ -90,7 +90,7 @@ const SendMoney = () => {
                                 )}
                             />
                             <Button type="submit" className="w-full">
-                                Send Money
+                                Send
                             </Button>
                         </form>
                     </Form>
@@ -100,4 +100,4 @@ const SendMoney = () => {
     );
 };
 
-export default SendMoney;
+export default CashIn;

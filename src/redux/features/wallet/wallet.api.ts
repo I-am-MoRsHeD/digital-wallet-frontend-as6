@@ -19,6 +19,14 @@ export const walletApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["WALLET", "TRANSACTION"]
         }),
+        cashIn: builder.mutation({
+            query: (cashInInfo) => ({
+                url: '/wallets/agent/cash-in',
+                method: 'POST',
+                data: cashInInfo
+            }),
+            invalidatesTags: ["WALLET", "TRANSACTION"]
+        }),
         walletInfo: builder.query({
             query: () => ({
                 url: '/wallets/me',
@@ -30,4 +38,4 @@ export const walletApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useWithdrawMutation, useSendMoneyMutation, useWalletInfoQuery } = walletApi;
+export const { useWithdrawMutation, useSendMoneyMutation, useCashInMutation ,useWalletInfoQuery } = walletApi;

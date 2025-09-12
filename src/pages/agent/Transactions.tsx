@@ -13,22 +13,20 @@ import {
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-} from "@/components/ui/pagination"
-import { useState } from "react";
-import { useDepositInfoQuery } from "@/redux/features/transaction/transaction.api";
-import { getDateFormat } from "@/utils/getDateFormat";
+} from "@/components/ui/pagination";
+import { useAllTransactionsQuery } from "@/redux/features/transaction/transaction.api";
 import type { ITransaction } from "@/types";
+import { getDateFormat } from "@/utils/getDateFormat";
+import { useState } from "react";
 
-
-const Deposit = () => {
+const Transactions = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const { data: depositInfo, isLoading } = useDepositInfoQuery(undefined);
+    const { data: transactions, isLoading } = useAllTransactionsQuery(undefined);
 
     if (isLoading) {
         return <div>Loading...</div>
     };
-
-    const totalPage = depositInfo?.meta?.totalPage;
+    const totalPage = transactions?.meta?.totalPage;
 
     const handlePrevPage = () => {
         setCurrentPage(prev => prev - 1);
@@ -37,33 +35,46 @@ const Deposit = () => {
     const handleNextPage = () => {
         setCurrentPage(prev => prev + 1);
     };
+
     return (
-        <div className="w-full p-3 bg-primary/5 rounded-lg">
+        <div className="col-span-12 lg:col-span-7 p-3 bg-primary/5 rounded-lg max-h-[80vh]">
             <div className='flex flex-row justify-between items-center'>
-                <h1 className="text-xl text-primary font-semibold">Deposit Log</h1>
+                <h1 className="text-lg text-primary font-semibold">Transactions</h1>
             </div>
-            <Table className="mt-5">
+            <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Date</TableHead>
                         <TableHead>Received From</TableHead>
+                        <TableHead>Send To</TableHead>
                         <TableHead>Method</TableHead>
                         <TableHead>Amount</TableHead>
                         <TableHead className="text-right">Status</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {depositInfo?.data?.map((data: ITransaction) => (
-                        <TableRow key={data._id}>
-                            <TableCell className="font-medium">
-                                {getDateFormat(data.createdAt)}
+                    {transactions?.data?.length === 0 ? (
+                        <TableRow>
+                            <TableCell colSpan={5} className="text-center">
+                                No transactions found.
                             </TableCell>
-                            <TableCell>{data?.sender?.name}</TableCell>
-                            <TableCell>Cash In</TableCell>
-                            <TableCell>{data.amount} BDT</TableCell>
-                            <TableCell className="text-right text-primary font-semibold">{data?.status}</TableCell>
                         </TableRow>
-                    ))}
+                    ) : (
+                        transactions?.data?.map((data: ITransaction) => (
+                            <TableRow key={data._id}>
+                                <TableCell className="font-medium">
+                                    {getDateFormat(data.createdAt)}
+                                </TableCell>
+                                <TableCell>{data?.sender?.name}</TableCell>
+                                <TableCell>{data?.receiver?.name}</TableCell>
+                                <TableCell>
+                                    {data?.type === 'CASH_IN' ? 'Cash In' : data?.type === 'WITHDRAWAL' && 'Cash Out'}
+                                </TableCell>
+                                <TableCell>{data.amount} BDT</TableCell>
+                                <TableCell className="text-right text-primary font-semibold">{data?.status}</TableCell>
+                            </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
             {totalPage > 1 && <div className="flex flex-row justify-end w-full my-5">
@@ -92,4 +103,4 @@ const Deposit = () => {
     );
 };
 
-export default Deposit;
+export default Transactions;

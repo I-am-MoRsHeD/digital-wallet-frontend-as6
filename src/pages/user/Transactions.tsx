@@ -53,20 +53,28 @@ const Transactions = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {transactions?.data?.map((data: ITransaction) => (
-                        <TableRow key={data._id}>
-                            <TableCell className="font-medium">
-                                {getDateFormat(data.createdAt)}
+                    {transactions?.data?.length === 0 ? (
+                        <TableRow>
+                            <TableCell colSpan={5} className="text-center">
+                                No transactions found.
                             </TableCell>
-                            <TableCell>{data?.sender?.name}</TableCell>
-                            <TableCell>{data?.receiver?.name}</TableCell>
-                            <TableCell>
-                                {data?.type === 'CASH_IN' ? 'Deposit' : data?.type === 'WITHDRAW' ? 'Withdraw' : 'Send Money'}
-                            </TableCell>
-                            <TableCell>{data.amount} BDT</TableCell>
-                            <TableCell className="text-right">{data?.status}</TableCell>
                         </TableRow>
-                    ))}
+                    ) : (
+                        transactions?.data?.map((data: ITransaction) => (
+                            <TableRow key={data._id}>
+                                <TableCell className="font-medium">
+                                    {getDateFormat(data.createdAt)}
+                                </TableCell>
+                                <TableCell>{data?.sender?.name}</TableCell>
+                                <TableCell>{data?.receiver?.name}</TableCell>
+                                <TableCell>
+                                    {data?.type === 'CASH_IN' ? 'Deposit' : data?.type === 'WITHDRAWAL' ? 'Withdraw' : 'Send Money'}
+                                </TableCell>
+                                <TableCell>{data.amount} BDT</TableCell>
+                                <TableCell className="text-right text-primary font-semibold">{data?.status}</TableCell>
+                            </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
             {totalPage > 1 && <div className="flex flex-row justify-end w-full my-5">
