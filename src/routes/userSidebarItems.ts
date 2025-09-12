@@ -1,9 +1,11 @@
-import Deposit from "@/pages/user/Deposit";
-import Overview from "@/pages/user/Overview";
-import Profile from "@/pages/user/Profile";
-import SendMoney from "@/pages/user/SendMoney";
-import Transactions from "@/pages/user/Transactions";
-import Withdraw from "@/pages/user/Withdraw";
+import { lazy } from "react";
+
+const Overview = lazy(() => import("@/pages/user/Overview"));
+const Deposit = lazy(() => import("@/pages/user/Deposit"));
+const Profile = lazy(() => import("@/pages/user/Profile"));
+const SendMoney = lazy(() => import("@/pages/user/SendMoney"));
+const Transactions = lazy(() => import("@/pages/user/Transactions"));
+const Withdraw = lazy(() => import("@/pages/user/Withdraw"));
 import type { ISidebar } from "@/types";
 
 

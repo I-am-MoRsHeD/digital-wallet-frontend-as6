@@ -7,14 +7,6 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
     Select,
     SelectContent,
     SelectGroup,
@@ -26,11 +18,12 @@ import { useAllTransactionsQuery } from "@/redux/features/transaction/transactio
 import type { ITransaction } from "@/types";
 import { getDateFormat } from "@/utils/getDateFormat";
 import { useState } from "react";
+import PaginationComponent from "@/components/common/Pagination/Pagination";
 
 const Transactions = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [filterType, setFilterType] = useState<string>("");
-    const { data: transactions, isLoading } = useAllTransactionsQuery({ ...(filterType && { type: filterType }) });
+    const { data: transactions, isLoading } = useAllTransactionsQuery({ page: currentPage, ...(filterType && { type: filterType }) });
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -95,7 +88,7 @@ const Transactions = () => {
                                             : data?.type === "WITHDRAWAL" && "Cash Out"}
                                     </TableCell>
                                     <TableCell>{data.amount} BDT</TableCell>
-                                    <TableCell className="text-right text-primary font-semibold">
+                                    <TableCell className="text-right text-green-600 font-semibold">
                                         {data?.status}
                                     </TableCell>
                                 </TableRow>
@@ -104,44 +97,13 @@ const Transactions = () => {
                     </TableBody>
                 </Table>
 
-                {totalPage > 1 && (
-                    <div className="flex flex-row justify-end w-full my-5">
-                        <Pagination>
-                            <PaginationContent>
-                                <PaginationItem>
-                                    <PaginationPrevious
-                                        onClick={handlePrevPage}
-                                        className={`${currentPage === 1
-                                            ? " pointer-events-none opacity-50"
-                                            : "cursor-pointer"
-                                            }`}
-                                    />
-                                </PaginationItem>
-                                {Array.from({ length: totalPage }, (_, index) => index + 1).map(
-                                    (page) => (
-                                        <PaginationItem key={page}>
-                                            <PaginationLink
-                                                isActive={currentPage === page}
-                                                onClick={() => setCurrentPage(page)}
-                                            >
-                                                {page}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                    )
-                                )}
-                                <PaginationItem>
-                                    <PaginationNext
-                                        onClick={handleNextPage}
-                                        className={`${currentPage === totalPage
-                                            ? " pointer-events-none opacity-50"
-                                            : "cursor-pointer"
-                                            }`}
-                                    />
-                                </PaginationItem>
-                            </PaginationContent>
-                        </Pagination>
-                    </div>
-                )}
+                <PaginationComponent
+                    totalPage={totalPage!}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    handlePrevPage={handlePrevPage}
+                    handleNextPage={handleNextPage}
+                />
             </div>
         </div>
     );

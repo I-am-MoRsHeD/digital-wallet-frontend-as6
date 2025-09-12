@@ -6,23 +6,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination"
 import { useState } from "react";
 import { useDepositInfoQuery } from "@/redux/features/transaction/transaction.api";
 import { getDateFormat } from "@/utils/getDateFormat";
 import type { ITransaction } from "@/types";
+import PaginationComponent from "@/components/common/Pagination/Pagination";
 
 
 const Deposit = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const { data: depositInfo, isLoading } = useDepositInfoQuery(undefined);
+    const { data: depositInfo, isLoading } = useDepositInfoQuery({ page: currentPage });
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -62,33 +55,18 @@ const Deposit = () => {
                                 <TableCell>{data?.sender?.name}</TableCell>
                                 <TableCell>Cash In</TableCell>
                                 <TableCell>{data.amount} BDT</TableCell>
-                                <TableCell className="text-right text-primary font-semibold">{data?.status}</TableCell>
+                                <TableCell className="text-right text-green-600 font-semibold">{data?.status}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                {totalPage > 1 && <div className="flex flex-row justify-end w-full my-5">
-                    <div>
-                        <Pagination>
-                            <PaginationContent>
-                                <PaginationItem>
-                                    <PaginationPrevious
-                                        onClick={handlePrevPage}
-                                        className={`${currentPage === 1 ? " pointer-events-none opacity-50" : "cursor-pointer"}`} />
-                                </PaginationItem>
-                                {
-                                    Array.from({ length: totalPage }, (_, index) => index + 1).map(page => <PaginationItem key={page}>
-                                        <PaginationLink isActive={currentPage === page} onClick={() => setCurrentPage(page)}>{page}</PaginationLink>
-                                    </PaginationItem>)
-                                }
-                                <PaginationItem>
-                                    <PaginationNext onClick={handleNextPage}
-                                        className={`${currentPage === totalPage ? " pointer-events-none opacity-50" : "cursor-pointer"}`} />
-                                </PaginationItem>
-                            </PaginationContent>
-                        </Pagination>
-                    </div>
-                </div>}
+                <PaginationComponent
+                    totalPage={totalPage!}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    handlePrevPage={handlePrevPage}
+                    handleNextPage={handleNextPage}
+                />
             </div>
         </div>
     );

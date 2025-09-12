@@ -7,14 +7,6 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
     Select,
     SelectContent,
     SelectGroup,
@@ -26,11 +18,13 @@ import { useAllTransactionsQuery } from "@/redux/features/transaction/transactio
 import type { ITransaction } from "@/types";
 import { getDateFormat } from "@/utils/getDateFormat";
 import { useState } from "react";
+import PaginationComponent from "@/components/common/Pagination/Pagination";
 
 const Transactions = () => {
     const [currentPage, setCurrentPage] = useState(1);
+    const limit = 2;
     const [filterType, setFilterType] = useState<string>("");
-    const { data: transactions, isLoading } = useAllTransactionsQuery({ ...(filterType && { type: filterType }) });
+    const { data: transactions, isLoading } = useAllTransactionsQuery({ page : currentPage ,limit, ...(filterType && { type: filterType }) });
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -47,7 +41,7 @@ const Transactions = () => {
 
     return (
         <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-12 lg:col-span-7 p-3 bg-primary/5 rounded-lg max-h-[80vh]">
+            <div className="col-span-12 p-3 bg-primary/5 rounded-lg max-h-[80vh]">
                 <div className='flex flex-row justify-between items-center'>
                     <h1 className="text-lg text-primary font-semibold">Transactions</h1>
                     <Select onValueChange={(value) => {
@@ -96,34 +90,20 @@ const Transactions = () => {
                                         {data?.type === 'CASH_IN' ? 'Deposit' : data?.type === 'WITHDRAWAL' ? 'Withdraw' : 'Send Money'}
                                     </TableCell>
                                     <TableCell>{data.amount} BDT</TableCell>
-                                    <TableCell className="text-right text-primary font-semibold">{data?.status}</TableCell>
+                                    <TableCell className="text-right text-green-600 font-semibold">{data?.status}</TableCell>
                                 </TableRow>
                             ))
                         )}
                     </TableBody>
                 </Table>
-                {totalPage > 1 && <div className="flex flex-row justify-end w-full my-5">
-                    <div>
-                        <Pagination>
-                            <PaginationContent>
-                                <PaginationItem>
-                                    <PaginationPrevious
-                                        onClick={handlePrevPage}
-                                        className={`${currentPage === 1 ? " pointer-events-none opacity-50" : "cursor-pointer"}`} />
-                                </PaginationItem>
-                                {
-                                    Array.from({ length: totalPage }, (_, index) => index + 1).map(page => <PaginationItem key={page}>
-                                        <PaginationLink isActive={currentPage === page} onClick={() => setCurrentPage(page)}>{page}</PaginationLink>
-                                    </PaginationItem>)
-                                }
-                                <PaginationItem>
-                                    <PaginationNext onClick={handleNextPage}
-                                        className={`${currentPage === totalPage ? " pointer-events-none opacity-50" : "cursor-pointer"}`} />
-                                </PaginationItem>
-                            </PaginationContent>
-                        </Pagination>
-                    </div>
-                </div>}
+
+                <PaginationComponent
+                    totalPage={totalPage!}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    handlePrevPage={handlePrevPage}
+                    handleNextPage={handleNextPage}
+                />
             </div>
         </div>
     );
