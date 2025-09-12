@@ -19,7 +19,7 @@ const RecentTransaction = () => {
     };
 
     return (
-        <div className="col-span-12 lg:col-span-7 p-3 bg-primary/5 rounded-lg max-h-[80vh]">
+        <div className="col-span-12 p-3 bg-primary/5 rounded-lg max-h-[80vh] max-w-full">
             <div className='flex flex-row justify-between items-center'>
                 <h1 className="text-lg text-primary font-semibold">Recent Transactions</h1>
                 <Link to="/user/transactions" className="text-lg text-foreground/50 font-medium">See all</Link>
@@ -51,7 +51,7 @@ const RecentTransaction = () => {
                                 <TableCell>{data?.sender?.name}</TableCell>
                                 <TableCell>{data?.receiver?.name}</TableCell>
                                 <TableCell>
-                                    {data?.type === 'CASH_IN' ? 'Deposit' : data?.type === 'WITHDRAWAL' ? 'Withdraw' : 'Send Money'}
+                                    {data?.type === 'CASH_IN' ? 'Cash In' : data?.type === 'WITHDRAWAL' && 'Cash Out'}
                                 </TableCell>
                                 <TableCell>{data.amount} BDT</TableCell>
                                 <TableCell className="text-right text-primary font-semibold">{data?.status}</TableCell>

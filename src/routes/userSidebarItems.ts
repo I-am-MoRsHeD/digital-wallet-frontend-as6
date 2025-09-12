@@ -26,7 +26,7 @@ export const userSidebarItems: ISidebar[] = [
                 component: Withdraw
             },
             {
-                title: "SendMoney",
+                title: "Send Money",
                 url: "/user/send-money",
                 component: SendMoney
             },

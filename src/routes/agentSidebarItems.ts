@@ -1,8 +1,10 @@
-import CashIn from "@/pages/agent/CashIn";
-import CashOut from "@/pages/agent/CashOut";
-import Overview from "@/pages/agent/Overview";
-import Profile from "@/pages/agent/Profile";
-import Transactions from "@/pages/agent/Transactions";
+import { lazy } from "react";
+
+const Overview = lazy(() => import("@/pages/agent/Overview"));
+const CashIn = lazy(() => import("@/pages/agent/CashIn"));
+const CashOut = lazy(() => import("@/pages/agent/CashOut"));
+const Transactions = lazy(() => import("@/pages/agent/Transactions"));
+const Profile = lazy(() => import("@/pages/agent/Profile"));
 import type { ISidebar } from "@/types";
 
 
