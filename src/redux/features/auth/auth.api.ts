@@ -32,7 +32,23 @@ export const authApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['USER']
         }),
+        updateUserInfo: builder.mutation({
+            query: (updatedInfo) => ({
+                url: `/user/${updatedInfo?.id}`,
+                method: 'PATCH',
+                data: updatedInfo?.data
+            }),
+            invalidatesTags: ['USER']
+        }),
+        updatePassword: builder.mutation({
+            query: (updatedInfo) => ({
+                url: `/user/change-password/${updatedInfo?.id}`,
+                method: 'PATCH',
+                data: updatedInfo?.data
+            }),
+            invalidatesTags: ['USER']
+        }),
     }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useUserInfoQuery, useLogoutMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation, useUserInfoQuery, useLogoutMutation, useUpdateUserInfoMutation, useUpdatePasswordMutation } = authApi;
