@@ -46,7 +46,7 @@ const Withdraw = () => {
     };
     return (
         <div className=" flex flex-col justify-center items-center min-h-[80vh]">
-            <div className="w-96 mx-auto p-3 bg-primary/5 rounded-lg">
+            <div className="w-full md:w-[60%] lg:w-96 mx-auto p-3 bg-primary/5 rounded-lg">
                 <div className='flex flex-row justify-between items-center'>
                     <h1 className="text-xl text-primary font-semibold">Withdraw</h1>
                 </div>
