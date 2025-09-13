@@ -8,6 +8,8 @@ import { createBrowserRouter } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { agentSidebarItems } from "./agentSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
+import Features from "@/pages/FeaturePage";
+import About from "@/pages/About";
 
 
 const router = createBrowserRouter([
@@ -21,15 +23,11 @@ const router = createBrowserRouter([
             },
             {
                 path: 'features',
-                Component: HomePage
-            },
-            {
-                path: 'pricing',
-                Component: HomePage
+                Component: Features
             },
             {
                 path: 'about',
-                Component: HomePage
+                Component: About
             },
             {
                 path: 'faq',

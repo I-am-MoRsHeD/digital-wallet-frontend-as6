@@ -19,7 +19,6 @@ import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
   { href: "/features", label: "Features", role: "PUBLIC" },
-  { href: "/pricing", label: "Pricing", role: "PUBLIC" },
   { href: "/about", label: "About", role: "PUBLIC" },
   { href: "/faq", label: "FAQ", role: "PUBLIC" },
   { href: "/contact", label: "Contact", role: "PUBLIC" },
