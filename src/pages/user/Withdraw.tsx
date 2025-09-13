@@ -34,7 +34,6 @@ const Withdraw = () => {
 
         try {
             const res = await withdraw(data).unwrap();
-            console.log(res);
             if (res.success) {
                 form.reset();
                 toast.success(res?.message, { id: toastId });

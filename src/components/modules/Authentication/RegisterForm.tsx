@@ -57,7 +57,6 @@ const RegisterForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
         const toastId = toast.loading('Please wait...');
         try {
             const res = await register(data).unwrap();
-            console.log(res);
             toast.success(res?.message, { id: toastId });
             navigate('/login');
         } catch (error: any) {
