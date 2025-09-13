@@ -22,9 +22,8 @@ import PaginationComponent from "@/components/common/Pagination/Pagination";
 
 const Transactions = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const limit = 2;
     const [filterType, setFilterType] = useState<string>("");
-    const { data: transactions, isLoading } = useDecodedTransactionsQuery({ page: currentPage, limit, ...(filterType && { type: filterType }) });
+    const { data: transactions, isLoading } = useDecodedTransactionsQuery({ page: currentPage, ...(filterType && { type: filterType }) });
 
     if (isLoading) {
         return <div>Loading...</div>

@@ -54,7 +54,7 @@ const RecentTransaction = () => {
                                     {data?.type === 'CASH_IN' ? 'Deposit' : data?.type === 'WITHDRAWAL' ? 'Withdraw' : 'Send Money'}
                                 </TableCell>
                                 <TableCell>{data.amount} BDT</TableCell>
-                                <TableCell className="text-right text-primary font-semibold">{data?.status}</TableCell>
+                                <TableCell className="text-right text-green-600 font-semibold">{data?.status}</TableCell>
                             </TableRow>
                         ))
                     )}
