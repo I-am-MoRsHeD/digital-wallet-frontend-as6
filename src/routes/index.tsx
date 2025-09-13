@@ -13,6 +13,7 @@ import About from "@/pages/About";
 import Faq from "@/pages/Faq";
 import ContactPage from "@/pages/ContactPage";
 import { withAuth } from "@/utils/withAuth";
+import Unauthorized from "@/pages/Unauthorized";
 
 
 const router = createBrowserRouter([
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
         path: '/register',
         Component: Register
     },
+    {
+        path: '/unauthorized',
+        Component: Unauthorized
+    }
 ]);
 
 export default router;

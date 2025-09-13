@@ -7,11 +7,11 @@ export const withAuth = (Component: ComponentType, requiredRole?: TRole) => {
     return function () {
         const { data, isLoading } = useUserInfoQuery(undefined);
 
-        if (!isLoading && !data?.data?.email) {
+        if (!isLoading && !data?.email) {
             return <Navigate to="/login" />
         };
 
-        if (requiredRole && !isLoading && requiredRole !== data?.data?.role) {
+        if (requiredRole && !isLoading && requiredRole !== data?.role) {
             return <Navigate to='/unauthorized' />
         }
 
