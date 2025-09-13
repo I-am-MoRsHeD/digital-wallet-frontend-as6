@@ -12,6 +12,7 @@ import Features from "@/pages/FeaturePage";
 import About from "@/pages/About";
 import Faq from "@/pages/Faq";
 import ContactPage from "@/pages/ContactPage";
+import { withAuth } from "@/utils/withAuth";
 
 
 const router = createBrowserRouter([
@@ -43,17 +44,17 @@ const router = createBrowserRouter([
     },
     {
         path: '/admin',
-        Component: DashboardLayout,
+        Component: withAuth(DashboardLayout, "ADMIN"),
         children: generateRoutes(adminSidebarItems)
     },
     {
         path: '/agent',
-        Component: DashboardLayout,
+        Component: withAuth(DashboardLayout, "AGENT"),
         children: generateRoutes(agentSidebarItems)
     },
     {
         path: '/user',
-        Component: DashboardLayout,
+        Component: withAuth(DashboardLayout, "USER"),
         children: generateRoutes(userSidebarItems)
     },
     {
