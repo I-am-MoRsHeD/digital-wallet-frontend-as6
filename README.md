@@ -1,69 +1,102 @@
-# React + TypeScript + Vite
+# 💳 Digital Wallet Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A **secure, role-based, and user-friendly** frontend application for a **Digital Wallet System** (similar to bKash or Nagad) built with **React.js**, **Redux Toolkit**, and **RTK Query**.  
+This app consumes a backend API to enable **Users**, **Agents**, and **Admins** to perform financial operations and manage wallets seamlessly.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+### 🌐 Public Landing Section
+- Responsive landing page with navbar, hero banner, and footer
+- About, Features, Contact, and FAQ pages
+- Smooth transitions, skeleton loaders, and realistic data
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🔑 Authentication
+- JWT-based login & registration (User / Agent)
+- Persisted authentication state
+- Role-based redirects
+- Secure logout
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 👤 User Dashboard
+- Wallet overview with balance & recent transactions
+- Deposit, Withdraw, and Send Money
+- Transaction history with pagination & filtering
+- Profile management
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 🏪 Agent Dashboard
+- Cash In/Out overview with balance & recent transactions
+- Cash-in & cash-out operations for users
+- Agent Transaction history with pagination & filtering
+- Profile management
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 🛠️ Admin Dashboard
+- System overview: total users, agents, transactions, volume
+- Manage users & agents (block/unblock, approve/suspend)
+- View/filter/search all transactions
+- Profile management
+
+### 🎨 General Features
+- Role-based navigation menus
+- Global loading & error handling
+- Toast notifications
+- Dark/Light theme toggle
+- Charts & tables for data visualization
+- Fully responsive design with accessibility considerations
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/) + [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
+- [React Router](https://reactrouter.com/)
+- [Tailwind CSS](https://tailwindcss.com/) + [ShadCN UI](https://ui.shadcn.com/)
+- [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) (form validation)
+- [Lucide Icons](https://lucide.dev/)
+
+### Backend (separate repo)
+- Node.js + Express
+- MongoDB + Mongoose
+- JWT + bcrypt (authentication)
+
+---
+
+## 📦 Installation & Setup
+
+### 1. Clone Repositories
+```bash
+git clone https://github.com/I-am-MoRsHeD/digital-wallet-frontend-as6
+cd digital-wallet-frontend-as6
+```
+### 2. Install Dependencies
+```bash
+npm i
+# or
+bun i
+```
+### 3. Environment Variables
+```bash
+Create a .env file in the frontend as per .env.example
+```
+### 4. Run the project
+```bash
+npm run dev
+# or 
+bun dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
+### 🌍 Deployment
+- Frontend : Vercel/Netlify
+- Backend : Render/Railway/Heroku
+- Make sure CORS, cookies, and HTTPS (secure: true, sameSite: "none") are configured properly.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🎥 Demo
+- Frontend : https://digital-wallet-frontend-as6.vercel.app/
+- Backend : https://digital-wallet-backend-as5.vercel.app/
+
+---
