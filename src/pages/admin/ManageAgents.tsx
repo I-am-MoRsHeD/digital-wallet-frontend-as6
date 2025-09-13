@@ -24,9 +24,11 @@ import type { IUser } from "@/types";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import PaginationComponent from "@/components/common/Pagination/Pagination";
 
 const ManageAgents = () => {
     const [approveSuspendAgent, { isLoading }] = useApproveSuspendAgentMutation();
+    const [currentPage, setCurrentPage] = useState(1);
     const [selectUserId, setSelectUserId] = useState<string | null>(null);
     const [searchParams, setSearchParams] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
@@ -35,6 +37,8 @@ const ManageAgents = () => {
     if (isUserLoading) {
         return <div>Loading...</div>
     };
+
+    const totalPage = agents?.meta?.totalPage;
 
     const handleUserAction = async () => {
         try {
@@ -69,12 +73,12 @@ const ManageAgents = () => {
                         </TableHeader>
                         <TableBody>
                             {
-                                agents?.length < 1 ? (
+                                agents?.data?.length < 1 ? (
                                     <TableRow>
                                         <TableCell colSpan={6} className="text-center">No agents found!</TableCell>
                                     </TableRow>
                                 ) : (
-                                    agents.map((data: IUser) => (
+                                    agents?.data?.map((data: IUser) => (
                                         <TableRow key={data._id}>
                                             <TableCell className="font-medium">
                                                 {getDateFormat(data.createdAt)}
@@ -120,7 +124,11 @@ const ManageAgents = () => {
                     </AlertDialogContent>
                 </AlertDialog>
             </div>
-
+            <PaginationComponent
+                totalPage={totalPage!}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+            />
         </div >
     );
 };

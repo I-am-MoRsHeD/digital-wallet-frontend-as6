@@ -24,17 +24,21 @@ import type { IUser } from "@/types";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import PaginationComponent from "@/components/common/Pagination/Pagination";
 
 const ManageUsers = () => {
     const [blockUnblockUser, { isLoading }] = useBlockUnblockUserMutation();
+    const [currentPage, setCurrentPage] = useState(1);
     const [searchParams, setSearchParams] = useState<string | null>(null);
     const [selectUserId, setSelectUserId] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
-    const { data: users, isLoading: isUserLoading } = useAllUserQuery({ role: "USER", searchTerm: searchParams });
+    const { data: users, isLoading: isUserLoading } = useAllUserQuery({ page: currentPage, role: "USER", searchTerm: searchParams });
 
     if (isUserLoading) {
         return <div>Loading...</div>
     };
+
+    const totalPage = users?.meta?.totalPage;
 
     const handleUserAction = async () => {
         try {
@@ -69,14 +73,14 @@ const ManageUsers = () => {
                         </TableHeader>
                         <TableBody>
                             {
-                                users?.length < 1 ? (
+                                users?.data?.length < 1 ? (
                                     <TableRow>
                                         <TableCell colSpan={6} className="text-center">
                                             No users found!
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    users.map((data: IUser) => (
+                                    users?.data?.map((data: IUser) => (
                                         <TableRow key={data._id}>
                                             <TableCell className="font-medium">
                                                 {getDateFormat(data.createdAt)}
@@ -123,7 +127,11 @@ const ManageUsers = () => {
                     </AlertDialogContent>
                 </AlertDialog>
             </div>
-
+            <PaginationComponent
+                totalPage={totalPage!}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+            />
         </div >
     );
 };
