@@ -30,7 +30,7 @@ const Transactions = () => {
     if (isLoading) {
         return <div>Loading...</div>
     };
-    const totalPage = transactions?.meta?.totalPage;;
+    const totalPage = transactions?.meta?.totalPage;
 
     return (
         <div className="grid grid-cols-12 gap-4">
