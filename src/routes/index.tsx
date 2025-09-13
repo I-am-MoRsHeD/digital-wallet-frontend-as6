@@ -14,6 +14,7 @@ import Faq from "@/pages/Faq";
 import ContactPage from "@/pages/ContactPage";
 import { withAuth } from "@/utils/withAuth";
 import Unauthorized from "@/pages/Unauthorized";
+import AuthLoading from "@/pages/AuthLoading";
 
 
 const router = createBrowserRouter([
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
     {
         path: '/unauthorized',
         Component: Unauthorized
+    },
+    {
+        path : '/authLoading',
+        Component : AuthLoading
     }
 ]);
 

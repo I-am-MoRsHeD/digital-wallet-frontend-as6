@@ -21,7 +21,7 @@ const LoginForm = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>
             if (res.statusCode === 200) {
                 toast.success(res.message, { id: toastId });
                 if (res?.data?.user?.role) {
-                    navigate(`/${res.data.user.role.toLowerCase()}/dashboard`);
+                    navigate(`/authLoading`);
                 }
             }
         } catch (err: any) {
