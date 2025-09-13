@@ -10,6 +10,8 @@ import { agentSidebarItems } from "./agentSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
 import Features from "@/pages/FeaturePage";
 import About from "@/pages/About";
+import Faq from "@/pages/Faq";
+import ContactPage from "@/pages/ContactPage";
 
 
 const router = createBrowserRouter([
@@ -31,11 +33,11 @@ const router = createBrowserRouter([
             },
             {
                 path: 'faq',
-                Component: HomePage
+                Component: Faq
             },
             {
                 path: 'contact',
-                Component: HomePage
+                Component: ContactPage
             },
         ]
     },
