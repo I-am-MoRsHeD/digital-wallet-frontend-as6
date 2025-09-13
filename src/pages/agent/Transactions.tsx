@@ -14,7 +14,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useAllTransactionsQuery } from "@/redux/features/transaction/transaction.api";
+import { useDecodedTransactionsQuery } from "@/redux/features/transaction/transaction.api";
 import type { ITransaction } from "@/types";
 import { getDateFormat } from "@/utils/getDateFormat";
 import { useState } from "react";
@@ -23,20 +23,12 @@ import PaginationComponent from "@/components/common/Pagination/Pagination";
 const Transactions = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [filterType, setFilterType] = useState<string>("");
-    const { data: transactions, isLoading } = useAllTransactionsQuery({ page: currentPage, ...(filterType && { type: filterType }) });
+    const { data: transactions, isLoading } = useDecodedTransactionsQuery({ page: currentPage, ...(filterType && { type: filterType }) });
 
     if (isLoading) {
         return <div>Loading...</div>
     };
-    const totalPage = transactions?.meta?.totalPage;
-
-    const handlePrevPage = () => {
-        setCurrentPage(prev => prev - 1);
-    }
-
-    const handleNextPage = () => {
-        setCurrentPage(prev => prev + 1);
-    };
+    const totalPage = transactions?.meta?.totalPage;;
 
     return (
         <div className="grid grid-cols-12 gap-4">
@@ -82,7 +74,7 @@ const Transactions = () => {
                                     </TableCell>
                                     <TableCell>{data?.sender?.name}</TableCell>
                                     <TableCell>{data?.receiver?.name}</TableCell>
-                                    <TableCell>
+                                    <TableCell className="font-semibold">
                                         {data?.type === "CASH_IN"
                                             ? "Cash In"
                                             : data?.type === "WITHDRAWAL" && "Cash Out"}
@@ -101,8 +93,6 @@ const Transactions = () => {
                     totalPage={totalPage!}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
-                    handlePrevPage={handlePrevPage}
-                    handleNextPage={handleNextPage}
                 />
             </div>
         </div>

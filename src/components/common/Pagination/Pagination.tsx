@@ -11,11 +11,18 @@ interface PaginationProps {
     totalPage: number;
     currentPage: number;
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-    handlePrevPage: () => void;
-    handleNextPage: () => void;
 };
 
-const PaginationComponent = ({ totalPage, currentPage, setCurrentPage, handlePrevPage, handleNextPage }: PaginationProps) => {
+const PaginationComponent = ({ totalPage, currentPage, setCurrentPage }: PaginationProps) => {
+
+    const handlePrevPage = () => {
+        setCurrentPage(prev => prev - 1);
+    }
+
+    const handleNextPage = () => {
+        setCurrentPage(prev => prev + 1);
+    };
+
     return (
         <>
             {totalPage > 1 && <div className="flex flex-row justify-end w-full my-5">

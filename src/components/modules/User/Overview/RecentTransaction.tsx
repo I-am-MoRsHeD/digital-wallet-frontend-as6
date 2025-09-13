@@ -6,13 +6,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useAllTransactionsQuery } from "@/redux/features/transaction/transaction.api";
+import { useDecodedTransactionsQuery } from "@/redux/features/transaction/transaction.api";
 import type { ITransaction } from "@/types";
 import { getDateFormat } from "@/utils/getDateFormat";
 import { Link } from "react-router";
 
 const RecentTransaction = () => {
-    const { data: transactions, isLoading } = useAllTransactionsQuery(undefined);
+    const { data: transactions, isLoading } = useDecodedTransactionsQuery(undefined);
 
     if (isLoading) {
         return <div>Loading...</div>

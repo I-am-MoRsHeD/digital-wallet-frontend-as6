@@ -17,7 +17,7 @@ export const transactionApi = baseApi.injectEndpoints({
             }),
             providesTags: ["WALLET", "TRANSACTION"]
         }),
-        allTransactions: builder.query({
+        decodedTransactions: builder.query({
             query: (query) => ({
                 url: '/transactions/me',
                 method: 'GET',
@@ -25,15 +25,15 @@ export const transactionApi = baseApi.injectEndpoints({
             }),
             providesTags: ["WALLET", "TRANSACTION"]
         }),
-        agentTransactionOverview: builder.query({
-            query: () => ({
-                url: '/transactions/agent/stats',
-                method: 'GET'
+        allTransactions: builder.query({
+            query: (query) => ({
+                url: '/transactions',
+                method: 'GET',
+                params: query
             }),
-            providesTags: ["WALLET", "TRANSACTION"],
-            transformResponse: (response) => response.data
+            providesTags: ["WALLET", "TRANSACTION"]
         }),
     }),
 });
 
-export const { useDepositInfoQuery, useCashOutInfoQuery, useAllTransactionsQuery, useAgentTransactionOverviewQuery } = transactionApi;
+export const { useDepositInfoQuery, useCashOutInfoQuery, useDecodedTransactionsQuery ,useAllTransactionsQuery } = transactionApi;

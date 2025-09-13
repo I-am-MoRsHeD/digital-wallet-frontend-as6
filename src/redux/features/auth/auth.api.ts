@@ -48,7 +48,30 @@ export const authApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['USER']
         }),
+        blockUnblockUser: builder.mutation({
+            query: (id) => ({
+                url: `/user/block-unblock/${id}`,
+                method: 'PATCH'
+            }),
+            invalidatesTags: ['USER']
+        }),
+        approveSuspendAgent: builder.mutation({
+            query: (id) => ({
+                url: `/user/approve-suspend/${id}`,
+                method: 'PATCH'
+            }),
+            invalidatesTags: ['USER']
+        }),
+        allUser: builder.query({
+            query: (query) => ({
+                url: '/user',
+                method: 'GET',
+                params: query
+            }),
+            providesTags: ["USER"],
+            transformResponse: (res) => res.data
+        }),
     }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useUserInfoQuery, useLogoutMutation, useUpdateUserInfoMutation, useUpdatePasswordMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation, useUserInfoQuery, useLogoutMutation, useUpdateUserInfoMutation, useUpdatePasswordMutation, useBlockUnblockUserMutation, useApproveSuspendAgentMutation ,useAllUserQuery } = authApi;

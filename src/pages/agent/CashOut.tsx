@@ -22,14 +22,7 @@ const CashOut = () => {
     };
 
     const totalPage = cashOutInfo?.meta?.totalPage;
-
-    const handlePrevPage = () => {
-        setCurrentPage(prev => prev - 1);
-    }
-
-    const handleNextPage = () => {
-        setCurrentPage(prev => prev + 1);
-    };
+    
     return (
         <div className="grid grid-cols-12 gap-4">
             <div className="col-span-12 w-full p-3 bg-primary/5 rounded-lg">
@@ -72,8 +65,6 @@ const CashOut = () => {
                     totalPage={totalPage!}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
-                    handlePrevPage={handlePrevPage}
-                    handleNextPage={handleNextPage}
                 />
             </div>
         </div>

@@ -14,6 +14,8 @@ export interface IUser {
     isApproved?: string;
     role: TRole;
     wallet?: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 
