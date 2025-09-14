@@ -1,4 +1,5 @@
 import Logo from "@/assets/icons/Logo";
+import { Link } from "react-router";
 
 
 const Footer = () => {
@@ -10,33 +11,24 @@ const Footer = () => {
                 </div>
 
                 <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-foreground">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt consequuntur amet culpa cum
-                    itaque neque.
+                    A seamless Digital Wallet experience for all your needs. You can send, receive, and manage your digital assets with ease and security.
                 </p>
 
                 <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
                     <li>
-                        <a className="text-muted-foreground transition hover:text-muted-foreground/75" href="#"> About </a>
+                        <Link to="/about" className="text-muted-foreground transition hover:text-muted-foreground/75"> About </Link>
                     </li>
 
                     <li>
-                        <a className="text-muted-foreground transition hover:text-muted-foreground/75" href="#"> Careers </a>
+                        <Link to="/features" className="text-muted-foreground transition hover:text-muted-foreground/75"> Features </Link>
                     </li>
 
                     <li>
-                        <a className="text-muted-foreground transition hover:text-muted-foreground/75" href="#"> History </a>
+                        <Link to="/faq" className="text-muted-foreground transition hover:text-muted-foreground/75"> FAQ </Link>
                     </li>
 
                     <li>
-                        <a className="text-muted-foreground transition hover:text-muted-foreground/75" href="#"> Services </a>
-                    </li>
-
-                    <li>
-                        <a className="text-muted-foreground transition hover:text-muted-foreground/75" href="#"> Projects </a>
-                    </li>
-
-                    <li>
-                        <a className="text-muted-foreground transition hover:text-muted-foreground/75" href="#"> Blog </a>
+                        <Link to="/contact" className="text-muted-foreground transition hover:text-muted-foreground/75"> Contact </Link>
                     </li>
                 </ul>
 
